@@ -32,7 +32,8 @@ class SearchVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.isNavigationBarHidden = true
+        // navigationController?.isNavigationBarHidden = true       --- instead of this, use below
+        navigationController?.setNavigationBarHidden(true, animated: true)
         usernameTextField.text = ""
     }
     
@@ -89,6 +90,7 @@ class SearchVC: UIViewController {
     
     @objc private func callToActionButtonTapped() {
         guard isUsernameEntered else {
+            // show alert
             presentGFAlertOnMainThread(alertTitle: "Empty Username",
                                        message: "Please enter a username. We need to know who to look for 🙂",
                                        buttonTitle: "OK")

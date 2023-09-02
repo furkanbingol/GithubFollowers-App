@@ -29,7 +29,6 @@ class GFTitleLabel: UILabel {
     
     private func configure() {
         textColor = .label
-        adjustsFontSizeToFitWidth = true        // If text size is long, reduce the font size.
         minimumScaleFactor = 0.9
         lineBreakMode = .byTruncatingTail       // furkanbin...
         translatesAutoresizingMaskIntoConstraints = false

@@ -44,11 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UITabBar.appearance().tintColor = .systemGreen
         
         if #available(iOS 15, *) {
-            let tabBarApperance = UITabBarAppearance()
-            tabBarApperance.configureWithOpaqueBackground()
-            tabBarApperance.backgroundColor = .systemBackground
-            UITabBar.appearance().scrollEdgeAppearance = tabBarApperance
-            UITabBar.appearance().standardAppearance = tabBarApperance
+            UITabBar.appearance().scrollEdgeAppearance = UITabBarAppearance()
         }
         
         return tabBar

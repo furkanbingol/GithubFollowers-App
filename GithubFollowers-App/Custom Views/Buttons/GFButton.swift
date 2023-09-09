@@ -35,4 +35,9 @@ class GFButton: UIButton {
         translatesAutoresizingMaskIntoConstraints = false             // programmatic AUTO-LAYOUT
     }
     
+    
+    func set(backgroundColor: UIColor, title: String) {
+        self.backgroundColor = backgroundColor
+        self.setTitle(title, for: .normal)
+    }
 }

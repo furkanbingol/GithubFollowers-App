@@ -9,9 +9,6 @@ import UIKit
 
 class FavoritesListVC: UIViewController {
 
-    // MARK: - UI Elements
-    
-    
     // MARK: - Properties
     
     

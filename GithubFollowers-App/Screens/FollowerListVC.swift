@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FollowerListVCDelegate: AnyObject {
+    func didRequestFollowers(for username: String)
+}
+
 class FollowerListVC: UIViewController {
     
     // enums are 'Hashable' by default
@@ -18,6 +22,7 @@ class FollowerListVC: UIViewController {
     var followers: [Follower] = []
     var filteredFollowers: [Follower] = []
     var searchBarIsHidden = false
+    var isSearching = false
     
     var page = 1
     var hasMoreFollowers = true
@@ -116,6 +121,7 @@ class FollowerListVC: UIViewController {
                     }
                 }
                 else if followers.count < 100 { self.hasMoreFollowers = false }
+                
                 self.followers += followers
                 self.updateData(followers: self.followers)
             case .failure(let error):
@@ -169,6 +175,17 @@ extension FollowerListVC: UICollectionViewDelegate {
 //        }
 //    }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let activeArray = isSearching ? filteredFollowers : followers
+        let follower = activeArray[indexPath.item]                     // indexPath.row == indexPath.item
+        
+        let userInfoVC = UserInfoVC()
+        userInfoVC.delegate = self
+        userInfoVC.username = follower.login     // passing data to userInfoVC
+        let navController = UINavigationController(rootViewController: userInfoVC)
+        present(navController, animated: true)
+    }
+    
     func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
         searchBarIsHidden = false
     }
@@ -183,16 +200,45 @@ extension FollowerListVC: UICollectionViewDelegate {
 extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text, !filter.isEmpty else {
+            isSearching = false
             updateData(followers: self.followers)
             return
         }
         
+        isSearching = true
         filteredFollowers = followers.filter { $0.login.lowercased().contains(filter.lowercased()) }
         updateData(followers: filteredFollowers)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        isSearching = false
         updateData(followers: self.followers)
     }
     
+}
+
+extension FollowerListVC: FollowerListVCDelegate {
+    
+    func didRequestFollowers(for username: String) {
+        // Resetting
+        self.username       = username
+        title               = username
+        page                = 1
+        searchBarIsHidden   = false
+        hasMoreFollowers    = true
+        followers.removeAll()
+        filteredFollowers.removeAll()
+        if isSearching {
+            navigationItem.searchController?.searchBar.text = ""
+            navigationItem.searchController?.isActive = false
+            navigationItem.searchController?.dismiss(animated: false)
+            isSearching = false
+        }
+        
+        // Scroll to TOP
+        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        
+        // Make a network call
+        getFollowers(username: username, page: page)
+    }
 }

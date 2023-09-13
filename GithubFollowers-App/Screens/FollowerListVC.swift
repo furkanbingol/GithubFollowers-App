@@ -56,6 +56,42 @@ class FollowerListVC: UIViewController {
     // MARK: - Functions
     private func configureViewController() {
         view.backgroundColor = .systemBackground
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        navigationItem.rightBarButtonItem = addButton
+    }
+    
+    @objc private func addButtonTapped() {
+        showLoadingView()
+        
+        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+            guard let self = self else { return }
+            self.dismissLoadingView()
+            
+            switch result {
+            case .success(let user):
+                let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+                
+                // update UserDefaults
+                PersistenceManager.updateWith(favorite: favorite, actionType: .add) { [weak self] error in
+                    guard let self = self else { return }
+                    
+                    guard error != nil else {
+                        self.presentGFAlertOnMainThread(alertTitle: "Success",
+                                                        message: "You have successfully favorited this user 🎉",
+                                                        buttonTitle: "Got it!")
+                        return
+                    }
+                    
+                    self.presentGFAlertOnMainThread(alertTitle: "Something went wrong",
+                                                    message: error!.rawValue, buttonTitle: "Ok")
+                }
+            case .failure(let error):
+                self.presentGFAlertOnMainThread(alertTitle: "Something went wrong",
+                                                message: error.rawValue,
+                                                buttonTitle: "Ok")
+            }
+        }
     }
     
     private func configureCollectionView() {

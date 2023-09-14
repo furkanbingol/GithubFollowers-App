@@ -13,6 +13,7 @@ class SearchVC: UIViewController {
     private let logoImageView = UIImageView()
     private let usernameTextField = GFTextField()
     private let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
+    var logoImageViewTopConstraint: NSLayoutConstraint!
     
     // computed property
     var isUsernameEntered: Bool {
@@ -52,12 +53,16 @@ class SearchVC: UIViewController {
     private func configureLogoImageView() {
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.image = UIImage(named: "gh-logo")!
+        logoImageView.image = Images.ghLogo
+        
+        let topConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
+        
+        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant)
+        logoImageViewTopConstraint.isActive = true
         
         // Constraints
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
             logoImageView.widthAnchor.constraint(equalToConstant: 200),
         ])
@@ -97,10 +102,10 @@ class SearchVC: UIViewController {
             return
         }
         
-        let vc = FollowerListVC()
-        vc.username = usernameTextField.text
-        vc.title = usernameTextField.text
-        navigationController?.pushViewController(vc, animated: true)
+        usernameTextField.resignFirstResponder()      // dismiss keyboard and responder
+        
+        let destVC = FollowerListVC(username: usernameTextField.text!)
+        navigationController?.pushViewController(destVC, animated: true)
     }
 }
 

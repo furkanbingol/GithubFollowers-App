@@ -32,11 +32,13 @@ class GFTextField: UITextField {
         font = UIFont.preferredFont(forTextStyle: .title2)
         adjustsFontSizeToFitWidth = true       // If text size is long, reduce the font size.
         minimumFontSize = 12
-        
         backgroundColor = .tertiarySystemBackground
+        
         autocorrectionType = .no
         autocapitalizationType = .none
+        clearButtonMode = .whileEditing
         returnKeyType = .go
+        
         placeholder = "Enter a username"
     }
 

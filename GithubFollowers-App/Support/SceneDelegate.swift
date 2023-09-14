@@ -18,40 +18,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
                 
-        configureNavigationBar()
-        window = UIWindow(windowScene: scene)
-        window?.rootViewController = createTabBar()
-        window?.makeKeyAndVisible()
-    }
-    
-    private func createSearchNC() -> UINavigationController {
-        let searchVC = SearchVC()
-        searchVC.title = "Search"
-        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
-        return UINavigationController(rootViewController: searchVC)
-    }
-    
-    private func createFavoritesNC() -> UINavigationController {
-        let favoritesListVC = FavoritesListVC()
-        favoritesListVC.title = "Favorites"
-        favoritesListVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
-        return UINavigationController(rootViewController: favoritesListVC)
-    }
-    
-    private func createTabBar() -> UITabBarController {
-        let tabBar = UITabBarController()
-        tabBar.viewControllers = [createSearchNC(), createFavoritesNC()]
-        UITabBar.appearance().tintColor = .systemGreen
-        
-        if #available(iOS 15, *) {
-            UITabBar.appearance().scrollEdgeAppearance = UITabBarAppearance()
-        }
-        
-        return tabBar
-    }
-    
-    private func configureNavigationBar() {
         UINavigationBar.appearance().tintColor = .systemGreen
+        window = UIWindow(windowScene: scene)
+        window?.rootViewController = GFTabBarController()
+        window?.makeKeyAndVisible()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

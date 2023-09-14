@@ -8,13 +8,12 @@
 import UIKit
 
 protocol UserInfoVCDelegate: AnyObject {
-    func didTapGitHubProfile(for user: User)
-    func didTapGetFollowers(for user: User)
+    func didRequestFollowers(for username: String)
 }
 
 class UserInfoVC: UIViewController {
 
-    weak var delegate: FollowerListVCDelegate?
+    weak var delegate: UserInfoVCDelegate?
     
     // MARK: - Properties
     private let headerView  = UIView()
@@ -103,7 +102,7 @@ class UserInfoVC: UIViewController {
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 180),
+            headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
             itemViewOne.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
@@ -118,12 +117,12 @@ class UserInfoVC: UIViewController {
             dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
             dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            dateLabel.heightAnchor.constraint(equalToConstant: 18)
+            dateLabel.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 }
 
-extension UserInfoVC: UserInfoVCDelegate {
+extension UserInfoVC: GFRepoItemVCDelegate {
     
     func didTapGitHubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else {
@@ -135,6 +134,9 @@ extension UserInfoVC: UserInfoVCDelegate {
         
         presentSafariViewController(with: url)     // in UIViewController+Ext
     }
+}
+
+extension UserInfoVC: GFFollowerItemVCDelegate {
     
     func didTapGetFollowers(for user: User) {
         guard user.followers != 0 else {

@@ -30,6 +30,7 @@ class GFEmptyStateView: UIView {
     
     
     private func configure() {
+        addSubviews(messageLabel, logoImageView)
         configureMessageLabel()
         configureLogoImageView()
     }
@@ -38,7 +39,6 @@ class GFEmptyStateView: UIView {
     private func configureMessageLabel() {
         messageLabel.numberOfLines = 3
         messageLabel.textColor = .secondaryLabel
-        addSubview(messageLabel)
         
         let labelCenterYConstant: CGFloat       = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhoneSE3rdGeneration ? -100 : -150
         let messageLabelCenterYConstraint       = messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: labelCenterYConstant)
@@ -55,7 +55,6 @@ class GFEmptyStateView: UIView {
     private func configureLogoImageView() {
         logoImageView.image = Images.emptyStateLogo
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(logoImageView)
     
         let imageViewBottomConstant: CGFloat    = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhoneSE3rdGeneration ? 80 : 40
         let logoImageViewBottomConstraint       = logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: imageViewBottomConstant)

@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol FollowerListVCDelegate: AnyObject {
-    func didRequestFollowers(for username: String)
-}
-
 class FollowerListVC: UIViewController {
     
     // enums are 'Hashable' by default
@@ -263,7 +259,7 @@ extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
     
 }
 
-extension FollowerListVC: FollowerListVCDelegate {
+extension FollowerListVC: UserInfoVCDelegate {
     
     func didRequestFollowers(for username: String) {
         // Resetting

@@ -35,7 +35,7 @@ class GFAlertVC: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.75)      // opacity
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.75)      // opacity
         
         configureContainerView()
         configureTitleLabel()

@@ -30,24 +30,42 @@ class GFEmptyStateView: UIView {
     
     
     private func configure() {
+        configureMessageLabel()
+        configureLogoImageView()
+    }
+    
+    
+    private func configureMessageLabel() {
         messageLabel.numberOfLines = 3
         messageLabel.textColor = .secondaryLabel
-        logoImageView.image = UIImage(named: "empty-state-logo")!
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        
         addSubview(messageLabel)
-        addSubview(logoImageView)
+        
+        let labelCenterYConstant: CGFloat       = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhoneSE3rdGeneration ? -100 : -150
+        let messageLabelCenterYConstraint       = messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: labelCenterYConstant)
+        messageLabelCenterYConstraint.isActive  = true
         
         NSLayoutConstraint.activate([
-            messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -150),
             messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
             messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
-            messageLabel.heightAnchor.constraint(equalToConstant: 200),
-            
-            logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
-            logoImageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
-            logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 180),
-            logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 50)
+            messageLabel.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
+    
+    
+    private func configureLogoImageView() {
+        logoImageView.image = Images.emptyStateLogo
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(logoImageView)
+    
+        let imageViewBottomConstant: CGFloat    = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhoneSE3rdGeneration ? 80 : 40
+        let logoImageViewBottomConstraint       = logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: imageViewBottomConstant)
+        logoImageViewBottomConstraint.isActive  = true
+        
+        NSLayoutConstraint.activate([
+            logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
+            logoImageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
+            logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 180)
+        ])
+    }
+    
 }

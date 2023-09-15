@@ -29,6 +29,7 @@ class GFAvatarImageView: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
+    
     func setImage(from urlString: String) {
         NetworkManager.shared.downloadImage(from: urlString) { [weak self] image in
             guard let self = self else { return }       // not do anything. Because 'placeholder image' is already showing.

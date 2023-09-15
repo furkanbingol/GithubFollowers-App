@@ -69,7 +69,6 @@ enum PersistenceManager {
                 completion(error)
             }
         }
-        
     }
     
 }

@@ -21,7 +21,10 @@ class UserInfoVC: UIViewController {
     private let itemViewTwo = UIView()
     private let dateLabel   = GFBodyLabel(textAlignment: .center)
     
-    private var itemViews   = [UIView]()      // include all views
+    private let scrollView  = UIScrollView()
+    private let contentView = UIView()
+    
+    private var itemViews   = [UIView]()       // include all views except scrollView
     
     var username: String!
     
@@ -29,6 +32,7 @@ class UserInfoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        configureScrollView()
         configureNavigationBar()
         layoutUI()
         getUserInfo()
@@ -40,6 +44,7 @@ class UserInfoVC: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
+    
     private func configureNavigationBar() {
         if #available(iOS 15, *) {
             navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBarAppearance()
@@ -49,10 +54,37 @@ class UserInfoVC: UIViewController {
         navigationItem.rightBarButtonItem = doneButton
     }
     
+    
     @objc private func doneButtonTapped() {
         dismiss(animated: true)
     }
 
+    
+    private func configureScrollView() {
+        view.addSubviews(scrollView)
+        scrollView.addSubviews(contentView)
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints    = false
+        contentView.translatesAutoresizingMaskIntoConstraints   = false
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            
+            // For ContentView, we add also these constraints
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 600)     // hard code
+        ])
+    }
+    
+    
     private func getUserInfo() {
         // background thread (in closure)
         NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
@@ -68,6 +100,7 @@ class UserInfoVC: UIViewController {
             }
         }
     }
+    
     
     private func configureUIElements(with user: User) {
         let repoItemVC = GFRepoItemVC(user: user)
@@ -93,30 +126,30 @@ class UserInfoVC: UIViewController {
     private func layoutUI() {
         itemViews = [headerView, itemViewOne, itemViewTwo, dateLabel]
         for itemView in itemViews {
-            view.addSubview(itemView)
+            contentView.addSubview(itemView)         // not view.addSubview() --> contentView.addSubview() (for SCROLLVIEW)
             itemView.translatesAutoresizingMaskIntoConstraints = false
         }
         
         let padding: CGFloat = 20
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
-            itemViewOne.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            itemViewOne.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            itemViewOne.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            itemViewOne.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             itemViewOne.heightAnchor.constraint(equalToConstant: 140),
             
             itemViewTwo.topAnchor.constraint(equalTo: itemViewOne.bottomAnchor, constant: padding),
-            itemViewTwo.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            itemViewTwo.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            itemViewTwo.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            itemViewTwo.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             itemViewTwo.heightAnchor.constraint(equalToConstant: 140),
             
             dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
-            dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             dateLabel.heightAnchor.constraint(equalToConstant: 40)
         ])
     }

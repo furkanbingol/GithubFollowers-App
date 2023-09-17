@@ -109,6 +109,10 @@ extension FavoritesListVC: UITableViewDataSource {
                     DispatchQueue.main.async {
                         self.favorites.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .left)
+                        
+                        if self.favorites.isEmpty {
+                            self.showEmptyStateView(with: "No Favorites?\nAdd one on the follower screen.", in: self.view)
+                        }
                     }
                 } else {
                     self.presentGFAlertOnMainThread(alertTitle: "Unable to remove",

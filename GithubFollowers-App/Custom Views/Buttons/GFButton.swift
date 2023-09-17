@@ -21,23 +21,36 @@ class GFButton: UIButton {
     
     
     // Custom init
-    init(backgroundColor: UIColor, title: String) {
-        super.init(frame: .zero)
-        self.backgroundColor = backgroundColor
-        self.setTitle(title, for: .normal)
-        configure()
+    convenience init(color: UIColor, title: String, systemImageName: String) {
+        self.init(frame: .zero)
+        // configure()    // not necessary because of "convenience"
+        set(color: color, title: title, systemImageName: systemImageName)
     }
+    
     
     private func configure() {
-        layer.cornerRadius = 10
-        setTitleColor(.white, for: .normal)
-        titleLabel?.font = .preferredFont(forTextStyle: .headline)    // dynamic type font == preferredFont
-        translatesAutoresizingMaskIntoConstraints = false             // programmatic AUTO-LAYOUT
+        // button style configuration - iOS15+
+        configuration = .tinted()
+        configuration?.cornerStyle = .medium
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        // layer.cornerRadius = 10
+        // setTitleColor(.white, for: .normal)
+        // titleLabel?.font = .preferredFont(forTextStyle: .headline)    // dynamic type font == preferredFont
     }
     
     
-    func set(backgroundColor: UIColor, title: String) {
-        self.backgroundColor = backgroundColor
-        self.setTitle(title, for: .normal)
+    func set(color: UIColor, title: String, systemImageName: String) {
+        configuration?.baseBackgroundColor = color
+        configuration?.baseForegroundColor = color
+        configuration?.title = title
+        
+        configuration?.image = UIImage(systemName: systemImageName)
+        configuration?.imagePadding = 6
+        configuration?.imagePlacement = .leading
+        
+        // self.backgroundColor = backgroundColor
+        // self.setTitle(title, for: .normal)
     }
 }

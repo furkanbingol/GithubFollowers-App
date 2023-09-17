@@ -25,7 +25,7 @@ class GFRepoItemVC: GFItemInfoVC {
         itemInfoViewOne.set(itemInfoType: ItemInfoType.repos, withCount: user.publicRepos)
         itemInfoViewTwo.set(itemInfoType: ItemInfoType.gists, withCount: user.publicGists)
         
-        actionButton.set(backgroundColor: .systemPurple, title: "Github Profile")
+        actionButton.set(color: .systemPurple, title: "Github Profile", systemImageName: "person")
         actionButton.addTarget(self, action: #selector(didTapGitHubProfile), for: .touchUpInside)
     }
     

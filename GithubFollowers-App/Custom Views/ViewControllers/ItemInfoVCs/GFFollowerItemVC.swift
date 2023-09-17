@@ -25,7 +25,7 @@ class GFFollowerItemVC: GFItemInfoVC {
         itemInfoViewOne.set(itemInfoType: ItemInfoType.followers, withCount: user.followers)
         itemInfoViewTwo.set(itemInfoType: ItemInfoType.following, withCount: user.following)
         
-        actionButton.set(backgroundColor: .systemGreen, title: "Get Followers")
+        actionButton.set(color: .systemGreen, title: "Get Followers", systemImageName: "person.3")
         actionButton.addTarget(self, action: #selector(didTapGetFollowers), for: .touchUpInside)
     }
     

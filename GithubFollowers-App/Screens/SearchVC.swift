@@ -12,7 +12,7 @@ class SearchVC: UIViewController {
     // MARK: - UI Elements
     private let logoImageView = UIImageView()
     private let usernameTextField = GFTextField()
-    private let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
+    private let callToActionButton = GFButton(color: .systemGreen, title: "Get Followers", systemImageName: "person.3")
     
     
     // computed property

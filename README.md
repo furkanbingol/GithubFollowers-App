@@ -20,7 +20,7 @@ With this application, you can list your Github followers and get detailed infor
  - MVC Design Pattern
 
 ## Preview
-https://github.com/furkanbingol/GithubFollowers-App/assets/94539804/2edad0b0-a65f-416f-8f30-082db76372a1
+https://github.com/furkanbingol/GithubFollowers-App/assets/94539804/199cfdec-07da-4e8f-89ab-9849a0f55394
 
 ## Lastly,
 Thanks <a href="https://twitter.com/seanallen_dev">Sean Allen</a>.
